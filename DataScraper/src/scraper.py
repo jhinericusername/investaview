@@ -40,7 +40,7 @@ def scrape_article_page(url, extractor_path):
     return data
 
 
-def extract_article_links(article_link_list_path):
+def extract_article_links(article_link_list_path, link_batch_generate_path):
     with open(article_link_list_path, 'r') as file:
         article_link_list_json = json.load(file)
 
@@ -60,12 +60,12 @@ def extract_article_links(article_link_list_path):
         list_to_json.append({'Article_Link': article_link_list[index]})
         if len(list_to_json) >= upper_bound:
             count += 1
-            with open(os.getcwd() + "\\data\\links\\tech_link_list_" + str(count) + ".json", "w") as outfile:
+            with open(os.getcwd() + link_batch_generate_path + str(count) + ".json", "w") as outfile:
                 json.dump(list_to_json, outfile)
             list_to_json = []
         index += 1
 
-def scrape_articles(csv_file_path, start=1, end=240, creating=False):
+def scrape_articles(csv_file_path, link_batch_generate_path, start=1, end=240, creating=False):
 
     if creating==True:
         data_to_save = [['Title', 'Ticker_Covered', 'Author', 'Author_Link', 'Summary', 'Full_Article_Text', 'Date_Of_Publication']]
@@ -75,7 +75,7 @@ def scrape_articles(csv_file_path, start=1, end=240, creating=False):
         write_mode = 'a'
     for i in range(start, end):
         print("reading articles from list: " + str(i))
-        json_file_name = os.getcwd() + "\\data\\links\\tech_link_list_" + str(i) + ".json"
+        json_file_name = os.getcwd() + link_batch_generate_path + str(i) + ".json"
         with open(json_file_name, 'r') as file:
             links_json = json.load(file)
         print(links_json)
@@ -107,12 +107,16 @@ def main():
     seeking_alpha_tech_url = variables.get_seeking_alpha_tech_url()
     seeking_alpha_reit_url = variables.get_seeking_alpha_reit_url()
 
-    # extract_article_links(os.getcwd() + variables.get_articles_link_list_path())
-
+    # Edit for article link scraping and content scraping
+    link_batch_generate_path = "\\data\\links\\link_list_"
+    csv_file_path = os.getcwd() + variables.get_REIT_article_content_path()
+    article_link_list_path = os.getcwd() + variables.get_articles_link_list_path()
     start = int(args.start)
     end = int(args.end)
 
-    scrape_articles(os.getcwd() + "\\data\\tech_article_content.csv", start, end, creating=False)
+    # extract_article_links(article_link_list_path, link_batch_generate_path)
+
+    scrape_articles(csv_file_path, link_batch_generate_path, start, end, creating=False)
 
     exit(0)
 
