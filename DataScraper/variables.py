@@ -9,10 +9,13 @@ requirements_path = "\\requirements.txt"
 
 # data
 
-articles_link_list_path = "\\data\\article_link_list.json"
+articles_link_list_path = "\\data\\links\\article_link_list.json"
+tech_article_content_path = "\\data\\tech_article_content.csv"
+REIT_article_content_path = "\\data\\REIT_article_content.csv"
 
 # Raw data scraped from Seeking Alpha
-seeking_alpha_content = '\\data\\seeking_alpha_content.json'
+seeking_alpha_tech_content = '\\data\\tech_article_content.json'
+seeking_alpha_REIT_content = '\\data\\REIT_article_content.json'
 
 # urls
 seeking_alpha_tech_url = "https://seekingalpha.com/stock-ideas/technology"
@@ -31,8 +34,11 @@ def get_scraper_script_path():
 def get_selectors_seeking_alpha_path():
     return selectors_seeking_alpha_path
 
-def get_seeking_alpha_content():
-    return seeking_alpha_content
+def get_seeking_alpha_tech_content():
+    return seeking_alpha_tech_content
+
+def get_seeking_alpha_REIT_content():
+    return seeking_alpha_REIT_content
 
 def get_requirements_path():
     return requirements_path

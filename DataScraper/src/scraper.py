@@ -7,6 +7,7 @@ from dateutil import parser as dateparser
 import json
 from requests_html import HTMLSession
 import csv
+import argparse
 
 # system
 import sys, subprocess
@@ -59,12 +60,12 @@ def extract_article_links(article_link_list_path):
         list_to_json.append({'Article_Link': article_link_list[index]})
         if len(list_to_json) >= upper_bound:
             count += 1
-            with open(os.getcwd() + "\\data\\link_list_" + str(count) + ".json", "w") as outfile:
+            with open(os.getcwd() + "\\data\\links\\tech_link_list_" + str(count) + ".json", "w") as outfile:
                 json.dump(list_to_json, outfile)
             list_to_json = []
         index += 1
 
-def scrape_articles(start=1, end=240, creating=False):
+def scrape_articles(csv_file_path, start=1, end=240, creating=False):
 
     if creating==True:
         data_to_save = [['Title', 'Ticker_Covered', 'Author', 'Author_Link', 'Summary', 'Full_Article_Text', 'Date_Of_Publication']]
@@ -74,7 +75,7 @@ def scrape_articles(start=1, end=240, creating=False):
         write_mode = 'a'
     for i in range(start, end):
         print("reading articles from list: " + str(i))
-        json_file_name = os.getcwd() + "\\data\\link_list_" + str(i) + ".json"
+        json_file_name = os.getcwd() + "\\data\\links\\tech_link_list_" + str(i) + ".json"
         with open(json_file_name, 'r') as file:
             links_json = json.load(file)
         print(links_json)
@@ -82,11 +83,12 @@ def scrape_articles(start=1, end=240, creating=False):
             article_link = article_pair['Article_Link']
             article_data = scrape_article_page(article_link, os.getcwd() + variables.get_seeking_alpha_article_yml())
             print(article_data)
-            new_row = [article_data['Title'], article_data['Ticker_Covered'], article_data['Author'], article_data['Author_Link'], article_data['Summary'], article_data['Full_Article_Text'], article_data['Date_Of_Publication']]
-            data_to_save.append(new_row)
-    
-    csv_file_name = os.getcwd() + "\\data\\article_content.csv"
-    with open(csv_file_name, write_mode, newline='', encoding='utf-8') as file:
+            if article_data['Ticker_Covered'] is not None and len(article_data['Ticker_Covered']) > 0: 
+                new_row = [article_data['Title'], article_data['Ticker_Covered'], article_data['Author'], article_data['Author_Link'], article_data['Summary'], article_data['Full_Article_Text'], article_data['Date_Of_Publication']]
+                data_to_save.append(new_row)
+
+
+    with open(csv_file_path, write_mode, newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
         for row in data_to_save:
             print(row)
@@ -95,28 +97,24 @@ def scrape_articles(start=1, end=240, creating=False):
 
 
 def main():
+    parser = argparse.ArgumentParser(description='args for scraper script')
+    parser.add_argument('--start', required=True,
+                        help='which set of links to start at')
+    parser.add_argument('--end', required=True,
+                        help='which set of links to end at')
+    args = parser.parse_args()
+
     seeking_alpha_tech_url = variables.get_seeking_alpha_tech_url()
     seeking_alpha_reit_url = variables.get_seeking_alpha_reit_url()
 
     # extract_article_links(os.getcwd() + variables.get_articles_link_list_path())
 
-    scrape_articles(10, 50, creating=False)
+    start = int(args.start)
+    end = int(args.end)
+
+    scrape_articles(os.getcwd() + "\\data\\tech_article_content.csv", start, end, creating=False)
 
     exit(0)
-
-    for article_link in article_link_list:
-
-        article_data = scrape_article_page(article_link)
-        
-        print("Finished retrieval")
-
-        json_object = json.dumps(article_data, indent = 4)
-        with open(variables.get_seeking_alpha_content(), "w") as outfile:
-            json.dump(article_data, outfile)
-        
-        
-        return jsonify(article_data)
-    return jsonify({'error':'URL to scrape is not valid or provided'}),400
 
 if __name__ == "__main__":
     main()
