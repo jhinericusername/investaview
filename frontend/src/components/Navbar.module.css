@@ -1,0 +1,46 @@
+.nav {
+    display: flex;
+    align-items: center;
+    /* justify-content: space-between; */
+    gap: 2rem;
+    /* padding: 0 2rem; */
+    font-family: Lexend;
+    height: 70px;
+    /* background-color: #ffffa1; */
+    overflow: hidden;
+    border-bottom: 2px #E5E5E5 solid;
+    /* background-color: #919396; */
+}
+
+.nav ul {
+    padding: 0;
+    margin: auto;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 5rem;
+}
+
+.title {
+    font-family: Lexend Deca;
+    position: relative;
+    width:fit-content;
+    padding-right: 50rem;
+    cursor: pointer;
+    font-size: 30px ;
+}
+
+.subtitle {
+    color: #919396;
+    font-size: 16px;
+    font-family: Lexend Deca;
+    font-weight: 400;
+    text-transform: capitalize;
+    cursor: pointer;
+    /* line-height: 52px; */
+}
+
+.view {
+    /* color: #FFB93F; */
+}
+
