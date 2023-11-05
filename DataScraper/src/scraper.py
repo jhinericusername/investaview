@@ -94,15 +94,56 @@ def scrape_articles(csv_file_path, link_batch_generate_path, start=1, end=240, c
             print(row)
             writer.writerow(row)
             
+def parse_lofty_marketplace_json():
+    json_file_path = os.getcwd() + "\\data\\misc\\lofty_marketplace_content.json"
+
+    content = [['Full Address', 'Projected Rental Yield (%)', 'Projected Annual Return (%)', 'Share Price ($)']]
+
+    # Open the JSON file for reading
+    with open(json_file_path, 'r') as file:
+        # Load the JSON data from the file
+        data = json.load(file)
+    
+    print(data)
+
+    for house_list in data['Housing_Lists_Box']['Housing_List']:
+        for house in house_list['Housing_List']:
+            if house['House']['Address'] and house['House']['City_State_Zip'] and house['House']['Projected_Rental_Yield'] and house['House']['Projected_Annual_Return'] and house['Price_Share']:
+                address = house['House']['Address'] + " " + house['House']['City_State_Zip']
+                projected_rental_yield = house['House']['Projected_Rental_Yield'].split("%")[0]
+                projected_annual_return = house['House']['Projected_Annual_Return'].split("%")[0]
+                share_price = ((house['Price_Share'].split("$")[1]).split("+")[0])
+                share_price = share_price.replace(",", "")
+                content.append([address, projected_rental_yield, projected_annual_return, share_price])
+    
+    print(content)
+
+    csv_file_path = os.getcwd() + variables.get_lofty_marketplace_content_path()
+
+    # Open the CSV file for writing
+    with open(csv_file_path, 'w', newline='') as file:
+        # Create a CSV writer object
+        csv_writer = csv.writer(file)
+
+        # Write the array to the CSV file
+        for row in content:
+            csv_writer.writerow(row)
 
 
 def main():
     parser = argparse.ArgumentParser(description='args for scraper script')
-    parser.add_argument('--start', required=True,
+    parser.add_argument('--start', required=False,
                         help='which set of links to start at')
-    parser.add_argument('--end', required=True,
+    parser.add_argument('--end', required=False,
                         help='which set of links to end at')
     args = parser.parse_args()
+
+    parse_lofty_marketplace_json()
+
+    if args.start is None or args.end is None:
+        print()
+        print("No start or end article link data sets specified, so program will exit early without processing links.")
+        exit(0)
 
     seeking_alpha_tech_url = variables.get_seeking_alpha_tech_url()
     seeking_alpha_reit_url = variables.get_seeking_alpha_reit_url()

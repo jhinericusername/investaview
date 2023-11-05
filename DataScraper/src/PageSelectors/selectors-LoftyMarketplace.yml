@@ -1,0 +1,42 @@
+Housing_Lists_Box:
+    css: '#marketplace-landing > div.bg-lofty-50.dark\:bg-lofty-darkest.py-8.px-8.sm\:px-16'
+    xpath: null
+    type: Text
+    children:
+        Housing_List:
+            css: 'div.grid.sm\:grid-cols-2'
+            xpath: null
+            multiple: true
+            type: Text
+            children:
+                Housing_List:
+                    css: div.property-card
+                    xpath: null
+                    multiple: true
+                    type: Text
+                    children:
+                        House:
+                            css: div.px-5
+                            xpath: null
+                            type: Text
+                            children:
+                                Address:
+                                    css: span.text-16.font-bold
+                                    xpath: null
+                                    type: Text
+                                City_State_Zip:
+                                    css: span.text-12.font-medium
+                                    xpath: null
+                                    type: Text
+                                Projected_Rental_Yield:
+                                    css: 'span.flex.text-16 span'
+                                    xpath: null
+                                    type: Text
+                                Projected_Annual_Return:
+                                    css: 'span.flex.text-14 span'
+                                    xpath: null
+                                    type: Text
+                        Price_Share:
+                            css: 'div.flex > div.flex.flex-col.items-center.justify-center.flex-1.bg-lofty-light.grow-0'
+                            xpath: null
+                            type: Text
