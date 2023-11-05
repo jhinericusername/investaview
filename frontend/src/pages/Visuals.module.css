@@ -2,6 +2,16 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+
+}
+
+.barContainer {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-left: 25px;
+    margin-right: 25px;
 }
 
 .header {
@@ -35,14 +45,19 @@
 
 .metricContainer {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     flex-direction: column;
+    margin-top: 50px;
+}
+
+.projection {
+    margin-top: 5rem;
 }
 
 .metrics {
     display: flex;
     /* flex-direction: row; */
-    /* justify-content: center; */
+    justify-content: center;
     height: 150px;
     margin-top: 1rem;   
     width: 1000px;
@@ -59,6 +74,8 @@
 .stockInfo {
     display: flex;
     align-items: center;
+    flex-direction: column;
+    margin-top: 50px;
 }
 
 .projection {
@@ -67,12 +84,14 @@
 
 .roots {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    /* flex-direction: column; */
+    align-items: center;
 }
 
 .optionTabs {
-
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .stockDetails {
@@ -80,9 +99,37 @@
 }
 
 .graph { 
-    width: 1000px
+    width: 1100px;
+    margin-left: 50px;
 }
 
 .reitTable {
     margin-top: 2rem;
+}
+
+.searchButton {
+    font-size: 14px;
+    border: none;
+    font-family: Lexend Deca;
+    background-color: #FFB93F;
+    color: black;
+    border-radius: 100px;
+    height: 40px;
+    width: 80px;
+    cursor: pointer;
+}
+
+.tradingView {
+    transform: scale(0.9);
+}
+
+.optionTabs {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 550px;
+}
+
+.stockDetails {
+    margin-top: 50px;
 }

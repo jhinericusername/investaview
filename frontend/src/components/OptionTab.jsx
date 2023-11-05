@@ -1,4 +1,4 @@
-import React from 'react'
+import { Card, Metric, Text } from "@tremor/react";
 
 const style = {
     backgroundColor: '#BED1F9',
@@ -15,10 +15,16 @@ const style = {
 }
 
 const OptionTab = ({ name, onClick }) => {
+    const regExp = /\(([^)]+)\)/;
+    const named = regExp.exec(name)[1];
 
     return (
-        <div style={style} onClick={() => onClick}>            
-            {name}
+        <div style={style} onClick={() => onClick}>
+            {/* {name} */}
+            <Card className="max-w-xs mx-auto" decoration="top" decorationColor="indigo">
+                <Text>Stock</Text>
+                <Metric>{named}</Metric>
+            </Card>
         </div>
     )
 }

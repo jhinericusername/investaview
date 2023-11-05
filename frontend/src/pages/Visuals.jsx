@@ -1,79 +1,156 @@
 import Navbar from '../components/Navbar'
 import CoolAccordion from '../components/CoolAccordion'
 import { Card, List, ListItem, LineChart, Title } from "@tremor/react";
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import styles from './Visuals.module.css'
 import StockData from '../components/StockData'
 import OptionTab from '../components/OptionTab'
 import React from 'react'
 import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
 import Slider from '@mui/material/Slider';
+import { useContext } from 'react'
+import { MyContext } from '../App'
+// import TradingViewWidget from '../components/TradingViewWidget';
+import { motion } from 'framer-motion'
+import daddy from 'papaparse';
+import TradingViewWidget from 'react-tradingview-widget';
 
 const Visuals = () => {
-    const [currStock, setStock] = useState('AAPL')
-    const [value, setValue] = React.useState(null);
+    const [currStock, setStock] = useState('')
+    // const [value, setValue] = React.useState(null);
 
     const { investment, setInvestment } = useContext(MyContext)
-	const { time, setTime } = useContext(MyContext)
-	const { recurrence, setRecurrence } = useContext(MyContext)
-	const { strat, setStrat } = useContext(MyContext)
+    const { time, setTime } = useContext(MyContext)
+    const { recurrence, setRecurrence } = useContext(MyContext)
+    const { strat, setStrat } = useContext(MyContext)
 
-    const handleStock = (stock) => {
+    const [csvContent, setCsvContent] = useState([])
 
-        setStock(stock)
+    const handleStock = (name) => {
+        console.log(currStock)
+        const regExp = /\(([^)]+)\)/;
+        const named = regExp.exec(name)[1];
+        setStock(named)
     }
 
-    const stockContent = [
+    const changeInvest = (event, newValue) => {
+        setInvestment(newValue);
+    };
+    const changeTime = (event, newValue) => {
+        setTime(newValue);
+    };
+    const changeRec = (event, newValue) => {
+        setRecurrence(newValue);
+    };
+    const changeStrat = (event, newValue) => {
+        setStrat(newValue);
+    };
+
+    function test() {
+        console.log(investment)
+        console.log(time)
+        console.log(recurrence)
+        console.log(strat)
+
+    }
+
+    const invest = [
         {
-            name: 'AAPL',
-            ticker: 'STK1',
-            symbol: 'S1',
-            price: 100,
-            description: 'Description for Stock 1',
-            recommendation: 'Buy',
-            index: 90,
+            value: 100,
+            label: '$100',
         },
         {
-            name: 'Stock 2',
-            ticker: 'STK2',
-            symbol: 'S2',
-            price: 120,
-            description: 'Description for Stock 2',
-            recommendation: 'Hold',
-            index: 80,
+            value: 500,
+            label: '$500',
         },
         {
-            name: 'Stock 3',
-            ticker: 'STK3',
-            symbol: 'S3',
-            price: 80,
-            description: 'Description for Stock 3',
-            recommendation: 'Sell',
-            index: 70,
+            value: 1000,
+            label: '$1000',
+        },
+        {
+            value: 5000,
+            label: '$5000',
+        },
+        {
+            value: 10000,
+            label: '$10000',
+        },
+        {
+            value: 25000,
+            label: '$25000',
         },
     ];
 
-    const marks = [
+    const timings = [
         {
-            value: 1,
-            label: '1%',
+            value: 0.5,
+            label: '.5',
         },
         {
-            value: 25,
-            label: '25',
+            value: 1,
+            label: '1',
+        },
+        {
+            value: 2,
+            label: '2',
+        },
+        {
+            value: 5,
+            label: '5',
+        },
+        {
+            value: 10,
+            label: '10',
+        },
+        {
+            value: 20,
+            label: '20',
+        },
+    ];
+
+    const recurr = [
+        {
+            value: 20,
+            label: '20',
         },
         {
             value: 50,
             label: '50',
         },
         {
-            value: 75,
-            label: '75',
+            value: 100,
+            label: '100',
+        },
+        {
+            value: 500,
+            label: '500',
+        },
+        {
+            value: 1000,
+            label: '1000',
+        },
+        {
+            value: 10000,
+            label: '10000',
+        },
+    ];
+
+    const strategy = [
+        {
+            value: 40,
+            label: 'passive',
         },
         {
             value: 100,
-            label: '100%',
+            label: 'moderate',
         },
+        {
+            value: 160,
+            label: 'aggressive',
+        },
+
     ];
 
     const investmentData = [
@@ -109,42 +186,105 @@ const Visuals = () => {
             rating: "95%",
         },
         {
-            name: "REIT 2",
+            name: "Simon Property Group",
             rating: "89%",
         },
         {
-            name: "Etc",
+            name: "Vanguard",
             rating: "98%",
         },
     ];
 
+    useEffect(() => {
+        const filePath = '/investment_data_full.csv'
+
+        // var stratTemp = 'Passive'
+        // if (strat === 40) {
+        //     stratTemp = 'Passive'
+        // } else if (strat === 100) {
+        //     stratTemp = 'Moderate'
+        // } else {
+        //     stratTemp = 'Aggressive'
+        // }
+
+        // test()
+
+        daddy.parse(filePath, {
+            download: true,
+            header: true,
+            skipEmptyLines: true,
+            complete: (result) => {
+                // Find the row that matches A, B, C, and D values
+                const matchingRows = result.data.filter((row) => {
+                    return (
+                        row["Initial Investment"] == investment &&
+                        row["Time Horizon"] == time &&
+                        row['Monthly Recurring'] == recurrence
+                        // row['Investment Strategy'] == stratTemp
+                    );
+                });
+
+                let newContent = [];
+                if (matchingRows) {
+                    // Create the stockContent object based on the matching row
+                    newContent = matchingRows.map((row) => {
+                        return {
+                            name: row["Stock Recommendation"],
+                            revenue: row.Revenue, // Replace with the actual CSV column name
+                            growth: row["YoY Growth"], // Replace with the actual CSV column name
+                            profit: row["Gross Profits"], // Replace with the actual CSV column name
+                            recommendation: 'Buy', // Set your recommendation here
+                        };
+                    });
+
+                    const regExpp = /\(([^)]+)\)/;
+                    setCsvContent(newContent);
+                    setStock(regExpp.exec(newContent[1].name)[1])
+                } else {
+                    // Handle the case where no matching row is found
+                    console.log('No matching row found');
+                }
+            },
+        });
+
+        // setCsvContent(newContent);
+    }, []);
+
     return (
         <div>
             <Navbar />
-
             <div className={styles.largeContainer}>
                 <div className={styles.topOnes}>
                     {/* header */}
-                    <div className={styles.header}>
+                    <div className={styles.header} >
                         Your Top Investments
                     </div>
 
-                    <div className={styles.stockInfo}>
-                        <div className={styles.optionTabs}>
-                            {stockContent.map((stock, index) => (
-                                <OptionTab key={index} name={stock.name} />
-                            ))}
-                        </div>
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
+                    >
+                        <div className={styles.stockInfo}>
+                            <div className={styles.optionTabs}>
+                                {csvContent.map((stock, index) => (
+                                    <OptionTab key={index} name={stock.name} onClick={() => handleStock(stock.name)} />
+                                ))}
+                            </div>
 
-                        <div className={styles.stockDetails}>
-                            {stockContent.map((stock, i) => {
-                                if (stock.name === currStock) {
-                                    return <StockData key={i} name={stock.name} ticker={stock.ticker} symbol={stock.symbol}
-                                        price={stock.price} description={stock.description} recommendation={stock.recommendation} index={stock.index} />
-                                }
-                            })}
+                            <div className={styles.stockDetails}>
+                                {csvContent.map((stock, i) => {
+                                    const regExp = /\(([^)]+)\)/;
+                                    const named = regExp.exec(stock.name)[1];
+
+                                    if (named === currStock) {
+                                        return <StockData key={i} name={stock.name} revenue={stock.revenue} growth={stock.growth}
+                                            profit={stock.profit} recommendation={stock.recommendation} />
+                                    }
+                                })}
+                            </div>
                         </div>
-                    </div>
+                    </motion.div>
 
                 </div>
 
@@ -154,31 +294,105 @@ const Visuals = () => {
                         Your Projection
                     </div>
                     <div className={styles.roots}>
-                        <div className={styles.inputting}>
+                        <div className={styles.entry}>
                             <div>
                                 {/* <BiDollar className={styles.dollar}/> */}
-                                <input type='text' className={styles.input}
-                                    placeholder="Current Risk/Capital ($)	" />
+                                {/* <input type='text' className={styles.input}
+							placeholder="Current Risk/Capital ($)	" /> */}
                             </div>
-                            <input type='text' className={styles.input}
-                                placeholder="Years to Grow (1-20)" />
+                            {/* <input type='text' className={styles.input}
+						 placeholder="Years to Grow (1-20)" /> */}
 
-                            <div>
-                                Risk desired
+                            <div className={styles.barContainer}>
+                                <div>
+                                    <Grid>
+                                        <Typography id="input-slider" gutterBottom>
+                                            Initial Investment ($)
+                                        </Typography>
+                                        <Box sx={{ width: 400 }}>
+                                            <Slider
+                                                aria-label="Custom marks"
+                                                defaultValue={1000}
+                                                min={100}
+                                                max={25000}
+                                                step={null}
+                                                valueLabelDisplay="auto"
+                                                marks={invest}
+                                                onChange={changeInvest}
+                                            />
+                                        </Box>
+                                    </Grid>
+                                </div>
+
+                                <div>
+                                    <Grid>
+                                        <Typography id="input-slider" gutterBottom>
+                                            Time Horizon (years)
+                                        </Typography>
+                                        <Box sx={{ width: 400 }}>
+                                            <Slider
+                                                aria-label="Custom marks"
+                                                defaultValue={1}
+                                                min={0}
+                                                max={20}
+                                                step={null}
+                                                valueLabelDisplay="auto"
+                                                marks={timings}
+                                                onChange={changeTime}
+                                            />
+                                        </Box>
+                                    </Grid>
+                                </div>
                             </div>
-                            <Box sx={{ width: 300 }}>
-                                <Slider
-                                    aria-label="Custom marks"
-                                    defaultValue={20}
-                                    // getAriaValueText={valuetext}
-                                    step={1}
-                                    valueLabelDisplay="auto"
-                                    marks={marks}
-                                />
-                            </Box>
+
+                            <div className={styles.barContainer}>
+                                <div>
+                                    <Grid>
+                                        <Typography id="input-slider" gutterBottom>
+                                            Recurring payment ($)
+                                        </Typography>
+                                        <Box sx={{ width: 400 }}>
+                                            <Slider
+                                                aria-label="Custom marks"
+                                                defaultValue={1000}
+                                                min={0}
+                                                max={10000}
+                                                step={null}
+                                                valueLabelDisplay="auto"
+                                                marks={recurr}
+                                                onChange={changeRec}
+                                            />
+                                        </Box>
+                                    </Grid>
+                                </div>
+
+                                <div>
+                                    <Grid>
+                                        <Typography id="input-slider" gutterBottom>
+                                            Investment Strategy
+                                        </Typography>
+                                        <Box sx={{ width: 400 }}>
+                                            <Slider
+                                                aria-label="Custom marks"
+                                                defaultValue={40}
+                                                min={0}
+                                                max={200}
+                                                step={null}
+                                                valueLabelDisplay="auto"
+                                                marks={strategy}
+                                                onChange={changeStrat}
+                                            />
+                                        </Box>
+                                    </Grid>
+                                </div>
+                            </div>
+                            <button className={styles.searchButton}>
+                                <span>Analyze</span>
+                            </button>
 
                         </div>
-                        <div className='graph'>
+
+                        <div className={styles.graph}>
                             <Card>
                                 <Title>Performance</Title>
                                 <LineChart
@@ -188,9 +402,9 @@ const Visuals = () => {
                                     categories={["Amount"]}
                                     colors={["orange"]}
                                     yAxisWidth={30}
-                                    onValueChange={(v) => setValue(v)}
+                                    // onValueChange={(v) => setValue(v)}
                                     connectNulls={true}
-                                    width={700}
+                                // width={700}
                                 />
                             </Card>
                             {/* <pre>{JSON.stringify(value)}</pre> */}
@@ -199,9 +413,11 @@ const Visuals = () => {
 
                 </div>
 
+
+
                 {/* metric definitions */}
                 <div className={styles.metricContainer}>
-                    <div className={styles.header}>Metrics</div>
+                    <div className={styles.header}>About the Metrics</div>
                     <div className={styles.metrics}>
                         <div><CoolAccordion title="MFI" content='Volume-weighted, relative strength indicator. Indicates whether it is overbought/oversold and gives insight into stock&apos; true "strength".' /></div>
                         <div><CoolAccordion title='MACD' content='Indicator of momentum. Compares two exponential weightages of the price and determines the overall rate of change.' /></div>
@@ -215,7 +431,7 @@ const Visuals = () => {
                         Your Real Estate Recommendations
                     </div>
                     <div className={styles.subHeader}>
-                        blurb about real estate ; why following tese recommmendations might be good
+                    Investing in real estate, even as a beginner, can provide a reliable path to both rental income and potential appreciation in property value.
                     </div>
                     <div>
                         <div className={styles.reitTable}>

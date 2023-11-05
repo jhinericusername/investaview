@@ -28,34 +28,31 @@ const Home = () => {
 		//   }, 3000);
 	}
 
-	function changeInvest(value) {
-		setInvestment(value)
-	}
-
-	function changeTime(value) {
-		setTime(value)
-	}
-
-	function changeRec(value) {
-		setRecurrence(value)
-	}
-
-	function changeStrat(value) {
-		setStrat(value)
-	}
+	const changeInvest = (event, newValue) => {
+		setInvestment(newValue);
+	};
+	const changeTime = (event, newValue) => {
+		setTime(newValue);
+	};
+	const changeRec = (event, newValue) => {
+		setRecurrence(newValue);
+	};
+	const changeStrat = (event, newValue) => {
+		setStrat(newValue);
+	};
 
 	const invest = [
 		{
 			value: 100,
-			label: '$100',
+			label: '',
 		},
 		{
 			value: 500,
-			label: '$500',
+			label: '',
 		},
 		{
 			value: 1000,
-			label: '$1000',
+			label: '',
 		},
 		{
 			value: 5000,
@@ -101,19 +98,19 @@ const Home = () => {
 	const recurr = [
 		{
 			value: 20,
-			label: '20',
+			label: '',
 		},
 		{
 			value: 50,
-			label: '50',
+			label: '',
 		},
 		{
 			value: 100,
-			label: '100',
+			label: '',
 		},
 		{
 			value: 500,
-			label: '500',
+			label: '',
 		},
 		{
 			value: 1000,
@@ -138,7 +135,7 @@ const Home = () => {
 			value: 160,
 			label: 'aggressive',
 		},
-		
+
 	];
 
 	return (
@@ -153,13 +150,18 @@ const Home = () => {
 						transition={{ duration: 0.5 }}
 					>
 						<div className={styles.tagline}>
-							<span className={styles.invest}>Powering</span> all the ways you <span className={styles.invest}>invest.</span>
+							<div className={styles.boxing}>
+								<span className={styles.invest}>Unveiling</span> Tomorrow's
+							</div>
+							<div>
+								Opportunities,<span className={styles.invest}> Today.</span>
+							</div>
 						</div>
 
 						<div className={styles.subtitle}>
 							<TypeAnimation
 								sequence={[
-									"Invest securely for the future.", 1
+									"Your Comprehensive Insight Engine.", 1
 								]}
 								speed={70}
 								style={{ fontSize: '24px' }}
@@ -186,6 +188,7 @@ const Home = () => {
 					{/* <input type='text' className={styles.input}
 						placeholder="Years to Grow (1-20)" /> */}
 
+					
 					<div className={styles.barContainer}>
 						<div>
 							<Grid>
@@ -271,11 +274,11 @@ const Home = () => {
 						</div>
 					</div>
 
-					<button className={styles.searchButton} onClick={handleSearch}>
+					
+				</div>
+				<button className={styles.searchButton} onClick={handleSearch}>
 						<span>Analyze</span>
 					</button>
-				</div>
-
 			</div>
 		</div>
 	)

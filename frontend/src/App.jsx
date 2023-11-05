@@ -7,10 +7,10 @@ import Visuals from './pages/Visuals'
 
 export const MyContext = createContext()
 const App = () => {
- 	const [ investment, setInvestment ] = useState(0)
-	const [ time, setTime ] = useState(0)
- 	const [ recurrence, setRecurrence] = useState(0)
- 	const [ strat, setStrat ] = useState('')
+ 	const [ investment, setInvestment ] = useState(100)
+	const [ time, setTime ] = useState(0.5)
+ 	const [ recurrence, setRecurrence] = useState(50)
+ 	const [ strat, setStrat ] = useState(40)
 
 	return (
 		<div>

@@ -1,5 +1,7 @@
 .body {
     font-family: Lexend Deca;
+    display: flex;
+    align-items: center;
 }
 
 .header {
@@ -7,4 +9,17 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+.tradingView {
+    transform: scale(0.9);
+}
+
+.reco {
+    font-size: 20px;
+    margin-top: 30px;
+}
+
+.green {
+    color: rgb(0, 255, 132);
 }

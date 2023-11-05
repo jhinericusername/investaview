@@ -12,7 +12,8 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    margin-right: 50px;
+    margin-left: 25px;
+    margin-right: 25px;
 }
 
 .body {
@@ -21,24 +22,29 @@
     justify-content: center;
     /* justify-content: space-between; */
     margin-left: 7rem;
+    height: 400px;
 }
 
 .tagline {
     font-family: Lexend Deca;
     font-size: 65px;
     word-wrap: break-word;
-    width: 450px;
+    width: 700px;
 }
 
 .invest {
     color: #9ebbf8;
 }
 
+.boxing {
+    /* width: 900 */
+}
+
 .subtitle {
-    margin-top: 2rem;
+    /* margin-top: 1rem; */
     font-family: Lexend Deca;
     font-size: 20px;
-    width: 375px;
+    width: 475px;
     word-wrap: break-word;
 }
 
@@ -47,6 +53,7 @@
     align-items: center;
     justify-content: center;
     width: 1200px;
+    margin-top: 30px;
 }
 
 .inputting {
