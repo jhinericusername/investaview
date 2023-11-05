@@ -1,6 +1,6 @@
 import Navbar from '../components/Navbar'
 import CoolAccordion from '../components/CoolAccordion'
-import { Card, LineChart, Title } from "@tremor/react";
+import { Card, List, ListItem, LineChart, Title } from "@tremor/react";
 import { useState } from 'react'
 import styles from './Visuals.module.css'
 import StockData from '../components/StockData'
@@ -12,6 +12,11 @@ import Slider from '@mui/material/Slider';
 const Visuals = () => {
     const [currStock, setStock] = useState('AAPL')
     const [value, setValue] = React.useState(null);
+
+    const { investment, setInvestment } = useContext(MyContext)
+	const { time, setTime } = useContext(MyContext)
+	const { recurrence, setRecurrence } = useContext(MyContext)
+	const { strat, setStrat } = useContext(MyContext)
 
     const handleStock = (stock) => {
 
@@ -100,18 +105,18 @@ const Visuals = () => {
 
     const REITs = [
         {
-          name: "Roots",
-          rating: "95%",
+            name: "Roots",
+            rating: "95%",
         },
         {
-          name: "REIT 2",
-          rating: "89%",
+            name: "REIT 2",
+            rating: "89%",
         },
         {
-          name: "Etc",
-          rating: "98%",
+            name: "Etc",
+            rating: "98%",
         },
-      ];
+    ];
 
     return (
         <div>
@@ -144,52 +149,54 @@ const Visuals = () => {
                 </div>
 
                 {/* projection-related info */}
-                <div>
-                    <div className={styles.inputting}>
-                        <div>
-                            {/* <BiDollar className={styles.dollar}/> */}
-                            <input type='text' className={styles.input}
-                                placeholder="Current Risk/Capital ($)	" />
-                        </div>
-                        <input type='text' className={styles.input}
-                            placeholder="Years to Grow (1-20)" />
-
-                        <div>
-                            Risk desired
-
-                        </div>
-                        <Box sx={{ width: 300 }}>
-                            <Slider
-                                aria-label="Custom marks"
-                                defaultValue={20}
-                                // getAriaValueText={valuetext}
-                                step={10}
-                                valueLabelDisplay="auto"
-                                marks={marks}
-                            />
-                        </Box>
-
-                    </div>
-
+                <div className={styles.projection}>
                     <div className={styles.header}>
                         Your Projection
                     </div>
-                    <div className='graph'>
-                        <Card>
-                            <Title>Performance</Title>
-                            <LineChart
-                                className="h-72 mt-4"
-                                data={investmentData}
-                                index="date"
-                                categories={["Amount"]}
-                                colors={["orange"]}
-                                yAxisWidth={30}
-                                onValueChange={(v) => setValue(v)}
-                                connectNulls={true}
-                            />
-                        </Card>
-                        {/* <pre>{JSON.stringify(value)}</pre> */}
+                    <div className={styles.roots}>
+                        <div className={styles.inputting}>
+                            <div>
+                                {/* <BiDollar className={styles.dollar}/> */}
+                                <input type='text' className={styles.input}
+                                    placeholder="Current Risk/Capital ($)	" />
+                            </div>
+                            <input type='text' className={styles.input}
+                                placeholder="Years to Grow (1-20)" />
+
+                            <div>
+                                Risk desired
+                            </div>
+                            <Box sx={{ width: 300 }}>
+                                <Slider
+                                    aria-label="Custom marks"
+                                    defaultValue={20}
+                                    // getAriaValueText={valuetext}
+                                    step={1}
+                                    valueLabelDisplay="auto"
+                                    marks={marks}
+                                />
+                            </Box>
+
+                        </div>
+                        <div className='graph'>
+                            <Card>
+                                <Title>Performance</Title>
+                                <LineChart
+                                    className="h-72 mt-4"
+                                    data={investmentData}
+                                    index="date"
+                                    categories={["Amount"]}
+                                    colors={["orange"]}
+                                    yAxisWidth={30}
+                                    onValueChange={(v) => setValue(v)}
+                                    connectNulls={true}
+                                    width={700}
+                                />
+                            </Card>
+                            {/* <pre>{JSON.stringify(value)}</pre> */}
+                        </div>
                     </div>
+
                 </div>
 
                 {/* metric definitions */}
@@ -211,8 +218,18 @@ const Visuals = () => {
                         blurb about real estate ; why following tese recommmendations might be good
                     </div>
                     <div>
-                        <div>
-                            {/* list of REITS */}
+                        <div className={styles.reitTable}>
+                            <Card className="max-w-xs">
+                                <Title>Recommended REIT's</Title>
+                                <List>
+                                    {REITs.map((item) => (
+                                        <ListItem key={item.name}>
+                                            <span>{item.name}</span>
+                                            <span>{item.rating}</span>
+                                        </ListItem>
+                                    ))}
+                                </List>
+                            </Card>
                         </div>
                     </div>
                 </div>
