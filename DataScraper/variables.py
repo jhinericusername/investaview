@@ -5,6 +5,7 @@ import math
 scraper_script_path = "\\src\\scraper.py"
 selectors_seeking_alpha_path = "\\src\\PageSelectors\\selectors-SeekingAlpha.yml"
 selectors_seeking_alpha_article_path = "\\src\\PageSelectors\\selectors-SeekingAlphaArticle.yml"
+selectors_lofty_marketplace_path = "\\src\\PageSelectors\\selectors-LoftyMarketplace.yml"
 requirements_path = "\\requirements.txt"
 
 # data
@@ -15,6 +16,7 @@ articles_link_list_path = "\\data\\links\\article_link_list.json"
 # Raw data scraped from Seeking Alpha
 tech_article_content_path = "\\data\\tech_article_content.csv"
 REIT_article_content_path = "\\data\\REIT_article_content.csv"
+lofty_marketplace_content_path = "\\data\\lofty_marketplace_content.csv"
 
 
 # urls
@@ -54,6 +56,9 @@ def get_seeking_alpha_reit_url():
 
 def get_articles_link_list_path():
     return articles_link_list_path
+
+def get_lofty_marketplace_content_path():
+    return  lofty_marketplace_content_path
 
 # YML Extractor files
 
