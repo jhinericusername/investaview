@@ -17,7 +17,11 @@ const Navbar = () => {
             <nav className={styles.nav}>
                 <ul>
                     <li className={styles.title} onClick={goHome}>
-                        <div><span className={styles.invest}>Investa</span><span className={styles.view}>View</span></div>
+                        <div>
+                            <img src='/investaLogo.png' alt='logo' className={styles.logo} />
+                            <div><span className={styles.invest}>Investa</span><span className={styles.view}>View</span></div>
+
+                        </div>
                     </li>
                     <li className={styles.subtitle}>
                         Dashboard

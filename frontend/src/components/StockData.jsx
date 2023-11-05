@@ -7,16 +7,16 @@ const StockData = (props) => {
 
     return (
         <div className={styles.body}>
-            <div>
-                
+            <div className={styles.header}>
+                <h2>{name}</h2>
+                <p>{ticker}</p>
+                <p> {symbol}</p>
             </div>
-            <h2>{name}</h2>
-            <p>Ticker: {ticker}</p>
-            <p>Symbol: {symbol}</p>
-            <p>Current Price: {price}</p>
-            <p>Description: {description}</p>
-            <p>Recommendation: {recommendation}</p>
-            <p>Comprehensive Stock Index: {index}</p>
+
+            <p> {price}</p>
+            <p> {description}</p>
+            <p> {recommendation}</p>
+            <p> {index}</p>
         </div>
     )
 }

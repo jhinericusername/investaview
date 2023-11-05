@@ -44,3 +44,10 @@
     /* color: #FFB93F; */
 }
 
+.logo {
+    transform: scale(0.35);
+    position: absolute;
+    top: -62px;
+    left: 125px;
+}
+
