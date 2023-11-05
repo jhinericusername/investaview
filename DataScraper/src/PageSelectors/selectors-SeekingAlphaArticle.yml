@@ -1,0 +1,28 @@
+Title:
+    css: h1.nh_eH
+    xpath: '//h1[contains(concat(" ",normalize-space(@class)," ")," nh_eH ")]'
+    type: Text
+Ticker_Covered:
+    css: a.va_Vw
+    xpath: null
+    type: Text
+Author:
+    css: 'div.tk_Ob a.tk_K6'
+    xpath: null
+    type: Text
+Author_Link:
+    css: 'div.tk_Ob a.tk_K6'
+    xpath: null
+    type: Link
+Summary:
+    css: ul.kr_f
+    xpath: null
+    type: Text
+Full_Article_Text:
+    css: div.iW_ig
+    xpath: null
+    type: Text
+Date_Of_Publication:
+    css: 'span.nh_KY:nth-of-type(1)'
+    xpath: null
+    type: Text

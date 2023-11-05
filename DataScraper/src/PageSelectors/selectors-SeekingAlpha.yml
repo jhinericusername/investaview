@@ -1,0 +1,15 @@
+Articles:
+    css: 'section.mx-auto div.pb-24'
+    xpath: null
+    type: Text
+    children:
+        Article_Box:
+            css: article.gv_gA
+            xpath: null
+            multiple: true
+            type: Text
+            children:
+                Article_Link:
+                    css: 'a[data-test-id="post-list-item-title"]'
+                    xpath: null
+                    type: Link
